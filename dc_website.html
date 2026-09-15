@@ -1,0 +1,2355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dreamcatcher Homestay · Dharamkot, Dharamshala</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:16px;}
+:root{
+  --black:#060c06;
+  --forest-deep:#0a110a;
+  --forest:#162616;
+  --moss:#223422;
+  --moss-mid:#2d4a2d;
+  --bark:#3a2010;
+  --bark-mid:#5c3820;
+  --gold:#d4960c;
+  --gold-bright:#f0b84a;
+  --gold-pale:#fae8a0;
+  --sage:#7a9468;
+  --mist:#a8bc98;
+  --parchment:#f7eed8;
+  --aged:#ede0c4;
+  --cream:#fdf9f0;
+  --text-dark:#12100a;
+  --text-body:#2a251a;
+  --text-muted:#6a6050;
+}
+body{
+  background:var(--parchment);
+  color:var(--text-body);
+  font-family:'Crimson Text',serif;
+  font-size:1.15rem;
+  line-height:1.75;
+  overflow-x:hidden;
+}
+
+/* ════════════════════════════════════
+   SCROLLBAR
+════════════════════════════════════ */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--forest-deep);}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px;}
+
+/* ════════════════════════════════════
+   NAV
+════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:28px 60px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all 0.5s cubic-bezier(.4,0,.2,1);
+}
+nav.scrolled{
+  background:rgba(6,12,6,0.94);
+  backdrop-filter:blur(16px);
+  padding:16px 60px;
+  border-bottom:1px solid rgba(212,150,12,0.12);
+}
+.nav-logo{
+  font-family:'Cinzel',serif;
+  font-size:1.05rem;
+  font-weight:600;
+  color:var(--gold-bright);
+  letter-spacing:0.15em;
+  text-decoration:none;
+  text-transform:uppercase;
+}
+.nav-links{
+  display:flex;gap:40px;list-style:none;
+}
+.nav-links a{
+  font-family:'Cinzel',serif;
+  font-size:0.7rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:rgba(247,238,216,0.65);
+  text-decoration:none;
+  transition:color 0.2s;
+  position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;
+  height:1px;background:var(--gold);
+  transform:scaleX(0);transition:transform 0.25s;
+}
+.nav-links a:hover{color:var(--gold-bright);}
+.nav-links a:hover::after{transform:scaleX(1);}
+.nav-book{
+  font-family:'Cinzel',serif;
+  font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--forest-deep);background:var(--gold);
+  border:none;padding:11px 28px;cursor:pointer;
+  text-decoration:none;display:inline-block;
+  transition:all 0.25s;
+}
+.nav-book:hover{background:var(--gold-bright);transform:translateY(-1px);box-shadow:0 6px 24px rgba(212,150,12,0.35);}
+@media(max-width:768px){.nav-links{display:none;}nav{padding:18px 24px;}nav.scrolled{padding:14px 24px;}}
+
+/* ════════════════════════════════════
+   HERO — CINEMATIC
+════════════════════════════════════ */
+.hero{
+  position:relative;
+  height:100vh;min-height:600px;
+  display:flex;align-items:flex-end;justify-content:flex-start;
+  overflow:hidden;
+  background:var(--forest-deep);
+}
+/* Layered gradient sky */
+.hero-sky{
+  position:absolute;inset:0;
+  background:linear-gradient(
+    180deg,
+    #020704 0%,
+    #0a1a0c 20%,
+    #102010 40%,
+    #1a3010 60%,
+    #2a4820 75%,
+    #3a5828 85%,
+    #1a2a12 100%
+  );
+}
+/* Stars canvas */
+#starCanvas{position:absolute;inset:0;z-index:1;}
+.aurora-wash{
+  position:absolute;inset:0;z-index:1;
+  background:
+    radial-gradient(ellipse 60% 40% at 22% 28%,rgba(122,148,104,0.16),transparent 60%),
+    radial-gradient(ellipse 55% 35% at 72% 18%,rgba(212,150,12,0.13),transparent 60%),
+    radial-gradient(ellipse 50% 40% at 48% 42%,rgba(240,184,74,0.1),transparent 55%);
+  mix-blend-mode:screen;
+  animation:auroraDrift 16s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+@keyframes auroraDrift{
+  0%{transform:translate(-2%,0) scale(1);opacity:0.65;}
+  50%{transform:translate(2%,-2%) scale(1.06);opacity:1;}
+  100%{transform:translate(-1%,2%) scale(1.02);opacity:0.75;}
+}
+/* Horizon glow */
+.hero-glow{
+  position:absolute;
+  bottom:25%;left:50%;
+  transform:translateX(-50%);
+  width:80%;height:200px;
+  background:radial-gradient(ellipse,rgba(212,150,12,0.18) 0%,transparent 70%);
+  z-index:2;
+  filter:blur(20px);
+}
+/* Mountain layers — parallax */
+.mtns{position:absolute;bottom:0;left:0;right:0;z-index:3;}
+.mtn-far{
+  position:absolute;bottom:12%;left:0;right:0;
+  fill:#1a2e1a;opacity:0.9;
+}
+.mtn-mid{
+  position:absolute;bottom:6%;left:0;right:0;
+  fill:#0f1f0f;
+}
+.mtn-near{
+  position:absolute;bottom:0;left:0;right:0;
+  fill:#080f08;
+}
+.cubist-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  width:100%;height:100%;
+  pointer-events:none;
+}
+.hero-wanderer{
+  position:absolute;left:56%;bottom:21%;
+  width:38px;height:auto;color:#f0e6cd;z-index:5;
+  opacity:0.55;
+  animation:wandererBob 5s ease-in-out infinite;
+}
+@keyframes wandererBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-2px);}}
+.brush-underline{
+  display:block;width:100%;max-width:260px;height:18px;
+  margin-top:2px;
+}
+@media(max-width:900px){.hero-wanderer{display:none;}}
+.hero-dreamcatcher{
+  position:absolute;
+  top:16%;right:6%;
+  width:min(280px,26vw);
+  height:auto;
+  z-index:3;
+  opacity:0;
+  animation:dcFadeIn 2s 1s forwards, dcSway 8s 3s ease-in-out infinite, dcGlowPulse 6s 3s ease-in-out infinite;
+  filter:drop-shadow(0 0 20px rgba(212,150,12,0.15));
+}
+@keyframes dcFadeIn{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes dcSway{0%,100%{transform:rotate(-1.5deg);}50%{transform:rotate(1.5deg);}}
+@keyframes dcGlowPulse{
+  0%,100%{filter:drop-shadow(0 0 16px rgba(212,150,12,0.18));}
+  50%{filter:drop-shadow(0 0 38px rgba(240,184,74,0.42));}
+}
+.hero-constellation{
+  position:absolute;top:15%;left:5%;width:280px;height:auto;z-index:2;
+  opacity:0;animation:dcFadeIn 2s 1.5s forwards;
+}
+@media(max-width:900px){.hero-dreamcatcher{display:none;}.hero-constellation{display:none;}}
+/* Fireflies */
+.firefly{
+  position:absolute;
+  width:3px;height:3px;
+  border-radius:50%;
+  background:var(--gold-bright);
+  z-index:4;
+  animation:float-fly 8s infinite ease-in-out;
+  box-shadow:0 0 6px 2px rgba(240,184,74,0.6);
+}
+@keyframes float-fly{
+  0%{transform:translate(0,0);opacity:0;}
+  10%{opacity:0.8;}
+  50%{transform:translate(var(--tx,20px),var(--ty,-30px));opacity:0.6;}
+  90%{opacity:0.4;}
+  100%{transform:translate(var(--tx2,40px),var(--ty2,-60px));opacity:0;}
+}
+/* Hero content */
+.hero-content{
+  position:absolute;z-index:10;
+  left:12%;
+  top:clamp(150px,24vh,240px);
+  max-width:720px;
+  padding:0;
+}
+.hero-eyebrow{
+  font-family:'Crimson Text',serif;
+  font-style:italic;
+  font-size:1.05rem;
+  color:var(--sage);
+  letter-spacing:0.06em;
+  margin-bottom:20px;
+  display:block;
+  opacity:0;
+  animation:fadeUp 1s 0.3s forwards;
+}
+.hero-title{
+  font-family:'Cinzel',serif;
+  font-size:clamp(3rem,7vw,6.5rem);
+  font-weight:700;
+  line-height:0.95;
+  letter-spacing:-0.01em;
+  color:var(--parchment);
+  margin-bottom:28px;
+  opacity:0;
+  animation:fadeUp 1s 0.6s forwards;
+}
+.hero-title em{
+  font-style:normal;
+  display:block;
+  background:linear-gradient(100deg,#c8960a 25%,#fff6da 48%,#f0b84a 65%,#c8960a 85%);
+  background-size:250% 100%;
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+  animation:shimmerSweep 5s ease-in-out infinite;
+}
+@keyframes shimmerSweep{
+  0%{background-position:200% 0;}
+  50%{background-position:0% 0;}
+  100%{background-position:-200% 0;}
+}
+.hero-sub{
+  font-size:1.1rem;
+  color:rgba(168,188,152,0.8);
+  max-width:480px;
+  line-height:1.85;
+  margin-bottom:44px;
+  opacity:0;
+  animation:fadeUp 1s 0.9s forwards;
+}
+.hero-btns{
+  display:flex;gap:16px;flex-wrap:wrap;
+  opacity:0;
+  animation:fadeUp 1s 1.1s forwards;
+}
+.btn-gold{
+  font-family:'Cinzel',serif;font-size:0.72rem;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--forest-deep);background:var(--gold);
+  border:none;padding:18px 48px;cursor:pointer;
+  text-decoration:none;display:inline-block;
+  transition:all 0.3s;
+}
+.btn-gold:hover{background:var(--gold-bright);transform:translateY(-2px);box-shadow:0 12px 40px rgba(212,150,12,0.4);}
+.btn-outline{
+  font-family:'Cinzel',serif;font-size:0.72rem;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--parchment);background:transparent;
+  border:1px solid rgba(247,238,216,0.3);
+  padding:18px 48px;cursor:pointer;
+  text-decoration:none;display:inline-block;
+  transition:all 0.3s;
+}
+.btn-outline:hover{border-color:var(--gold-bright);color:var(--gold-bright);}
+/* Scroll indicator */
+.hero-scroll-hint{
+  position:absolute;bottom:36px;right:60px;z-index:10;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;animation:fadeIn 1s 1.8s forwards;
+}
+.scroll-line{
+  width:1px;height:60px;
+  background:linear-gradient(180deg,rgba(212,150,12,0.6),transparent);
+  animation:scrollPulse 2s infinite;
+}
+@keyframes scrollPulse{0%{transform:scaleY(1);opacity:1;}100%{transform:scaleY(0.3);opacity:0.3;}}
+.scroll-label{
+  font-family:'Cinzel',serif;font-size:0.6rem;
+  letter-spacing:0.2em;color:rgba(212,150,12,0.6);
+  writing-mode:vertical-rl;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* ════════════════════════════════════
+   STAT BAR
+════════════════════════════════════ */
+.stat-bar{
+  background:var(--gold);
+  padding:0;
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.stat-item{
+  padding:28px 24px;
+  text-align:center;
+  border-right:1px solid rgba(0,0,0,0.1);
+  transition:background 0.25s;
+}
+.stat-item:last-child{border-right:none;}
+.stat-item:hover{background:var(--gold-bright);}
+.stat-num{
+  font-family:'Cinzel',serif;
+  font-size:1.8rem;font-weight:700;
+  color:var(--forest-deep);
+  display:block;line-height:1;
+  margin-bottom:4px;
+}
+.stat-label{
+  font-size:0.78rem;
+  color:rgba(10,17,10,0.65);
+  font-family:'Crimson Text',serif;
+  font-style:italic;
+}
+@media(max-width:600px){.stat-bar{grid-template-columns:repeat(2,1fr);}.stat-item{border-right:none;border-bottom:1px solid rgba(0,0,0,0.1);}}
+
+/* ════════════════════════════════════
+   STORY — FULL WIDTH SPLIT
+════════════════════════════════════ */
+.story{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:90vh;
+}
+.story-visual{
+  background:var(--forest);
+  position:relative;
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  min-height:500px;
+}
+.story-visual-inner{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#0a1a0a 0%,#1a3020 50%,#0f2010 100%);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:16px;
+}
+.story-visual-ornament{
+  font-size:5rem;opacity:0.15;
+  animation:breathe 4s infinite ease-in-out;
+}
+.story-art{width:70%;max-width:280px;height:auto;position:relative;z-index:1;}
+@keyframes breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+
+/* Painterly organic blob washes - "canvas patch" behind each illustration */
+.paint-wash{position:absolute;top:50%;left:50%;width:72%;height:72%;z-index:0;pointer-events:none;}
+.wash-a{border-radius:42% 58% 65% 35% / 45% 40% 60% 55%;background:radial-gradient(circle at 32% 28%,rgba(212,150,12,0.22),transparent 68%);transform:translate(-50%,-50%) rotate(-7deg);}
+.wash-b{border-radius:60% 40% 55% 45% / 50% 62% 38% 50%;background:radial-gradient(circle at 68% 35%,rgba(122,148,104,0.2),transparent 68%);transform:translate(-50%,-50%) rotate(9deg);}
+.wash-c{border-radius:35% 65% 45% 55% / 60% 45% 55% 40%;background:radial-gradient(circle at 38% 62%,rgba(212,150,12,0.17),transparent 68%);transform:translate(-50%,-50%) rotate(-4deg);}
+.wash-d{border-radius:55% 45% 38% 62% / 42% 58% 42% 58%;background:radial-gradient(circle at 60% 65%,rgba(240,184,74,0.18),transparent 68%);transform:translate(-50%,-50%) rotate(5deg);}
+.story-visual-label{
+  font-family:'Crimson Text',serif;font-style:italic;
+  color:rgba(212,150,12,0.3);font-size:0.9rem;
+  letter-spacing:0.08em;
+}
+.story-visual-border{
+  position:absolute;inset:20px;
+  border:1px solid rgba(212,150,12,0.1);
+  pointer-events:none;
+}
+.story-text{
+  background:var(--forest-deep);
+  padding:80px 72px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.section-overline{
+  font-family:'Crimson Text',serif;
+  font-style:italic;
+  font-size:1rem;
+  color:var(--gold);
+  letter-spacing:0.06em;
+  display:block;
+  margin-bottom:16px;
+}
+.section-heading{
+  font-family:'Cinzel',serif;
+  font-weight:600;
+  line-height:1.1;
+  letter-spacing:0.01em;
+}
+.heading-xl{font-size:clamp(2rem,4vw,3.2rem);}
+.heading-lg{font-size:clamp(1.8rem,3.5vw,2.8rem);}
+.heading-md{font-size:clamp(1.4rem,2.5vw,2rem);}
+.on-dark{color:var(--parchment);}
+.on-light{color:var(--forest);}
+.body-text{
+  font-size:1.05rem;
+  line-height:1.9;
+  max-width:560px;
+}
+.body-dark{color:rgba(247,238,216,0.75);}
+.body-light{color:var(--text-body);}
+.pull-quote{
+  border-left:2px solid var(--gold);
+  padding:20px 28px;
+  margin:32px 0;
+  background:rgba(212,150,12,0.05);
+}
+.pull-quote blockquote{
+  font-family:'Crimson Text',serif;
+  font-style:italic;
+  font-size:1.2rem;
+  color:var(--gold-pale);
+  line-height:1.8;
+}
+.insta-link{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Cinzel',serif;font-size:0.7rem;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(212,150,12,0.3);
+  padding:12px 24px;text-decoration:none;margin-top:16px;
+  transition:all 0.25s;
+}
+.insta-link:hover{background:rgba(212,150,12,0.08);border-color:var(--gold);}
+@media(max-width:900px){.story{grid-template-columns:1fr;}.story-text{padding:60px 36px;}.story-visual{min-height:340px;}}
+
+/* ════════════════════════════════════
+   FEATURES — DARK GRID
+════════════════════════════════════ */
+.features{background:var(--bark);padding:100px 60px;}
+.features-inner{max-width:1200px;margin:0 auto;}
+.features-header{margin-bottom:64px;max-width:600px;}
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1px;
+  background:rgba(212,150,12,0.08);
+}
+.feat{
+  background:var(--bark);
+  padding:52px 48px;
+  transition:background 0.35s;
+  position:relative;
+  overflow:hidden;
+}
+.feat::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  transform:scaleX(0);transition:transform 0.4s;
+}
+.feat:hover{background:rgba(212,150,12,0.04);}
+.feat:hover::before{transform:scaleX(1);}
+.feat-icon{
+  font-size:2.4rem;margin-bottom:24px;display:block;
+  filter:drop-shadow(0 0 8px rgba(212,150,12,0.3));
+}
+.feat-title{
+  font-family:'Cinzel',serif;
+  font-size:1.05rem;font-weight:600;
+  color:var(--gold-bright);
+  letter-spacing:0.04em;margin-bottom:14px;
+}
+.feat-body{
+  font-size:0.95rem;
+  color:rgba(247,238,216,0.6);
+  line-height:1.85;
+}
+@media(max-width:768px){.features{padding:72px 24px;}.features-grid{grid-template-columns:1fr;}.feat{padding:36px 28px;}}
+
+/* ════════════════════════════════════
+   ROOMS — EDITORIAL
+════════════════════════════════════ */
+.rooms{padding:100px 60px;background:var(--parchment);}
+.rooms-inner{max-width:1200px;margin:0 auto;}
+.rooms-header{margin-bottom:64px;}
+.rooms-stack{display:flex;flex-direction:column;gap:2px;}
+.room-row{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  min-height:420px;
+  overflow:hidden;
+  transition:transform 0.4s;
+}
+.room-row:hover{transform:scale(1.005);z-index:2;position:relative;}
+.room-row.reverse{grid-template-columns:1fr 1.2fr;}
+.room-visual{
+  position:relative;overflow:hidden;
+  background:var(--forest);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:12px;
+}
+.room-visual-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#162616,#0a110a);
+  transition:transform 0.5s ease;
+}
+.room-row:hover .room-visual-bg{transform:scale(1.03);}
+.room-visual-icon{font-size:3.5rem;opacity:0.18;position:relative;z-index:1;}
+.room-art{width:130px;height:130px;position:relative;z-index:1;}
+.room-visual-label{
+  position:relative;z-index:1;
+  font-family:'Crimson Text',serif;font-style:italic;
+  color:rgba(212,150,12,0.3);font-size:0.85rem;
+}
+.room-visual-badge{
+  position:absolute;top:24px;left:24px;z-index:2;
+  font-family:'Cinzel',serif;font-size:0.65rem;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--forest-deep);background:var(--gold);
+  padding:6px 16px;
+}
+.room-info{
+  background:var(--aged);
+  padding:60px 56px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.room-name{
+  font-family:'Cinzel',serif;
+  font-size:1.4rem;font-weight:600;
+  color:var(--forest);letter-spacing:0.02em;
+  margin-bottom:16px;
+}
+.room-desc{
+  font-size:1rem;color:var(--text-muted);
+  line-height:1.85;margin-bottom:28px;
+  max-width:420px;
+}
+.room-pricing{
+  margin-bottom:32px;
+}
+.room-price-row{
+  display:flex;align-items:baseline;gap:10px;margin-bottom:4px;
+}
+.price-big{
+  font-family:'Cinzel',serif;font-size:2rem;
+  font-weight:700;color:var(--gold);
+}
+.price-usd{font-size:0.9rem;color:var(--text-muted);}
+.price-per{font-size:0.82rem;color:var(--text-muted);font-style:italic;}
+.room-amenities{
+  display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;
+}
+.amenity{
+  font-size:0.78rem;font-family:'Cinzel',serif;
+  letter-spacing:0.06em;
+  color:var(--text-muted);
+  border:1px solid rgba(61,43,26,0.15);
+  padding:4px 12px;
+}
+.btn-room{
+  font-family:'Cinzel',serif;font-size:0.7rem;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--forest);background:transparent;
+  border:1px solid var(--gold);
+  padding:14px 36px;cursor:pointer;
+  text-decoration:none;display:inline-block;
+  transition:all 0.25s;align-self:flex-start;
+}
+.btn-room:hover{background:var(--gold);color:var(--forest-deep);}
+@media(max-width:900px){
+  .rooms{padding:72px 24px;}
+  .room-row,.room-row.reverse{grid-template-columns:1fr;}
+  .room-visual{min-height:280px;}
+  .room-info{padding:40px 28px;}
+}
+
+/* ════════════════════════════════════
+   CAFE — IMMERSIVE DARK
+════════════════════════════════════ */
+.cafe{
+  background:var(--forest-deep);
+  padding:0;
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:85vh;
+}
+.cafe-visual{
+  background:var(--bark);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:16px;
+  min-height:500px;
+}
+.cafe-visual-inner{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#3a2010,#261408,#1a0e06);
+}
+.cafe-visual-icon{font-size:5rem;opacity:0.12;position:relative;z-index:1;}
+.cafe-art{width:180px;height:180px;position:relative;z-index:1;}
+.cafe-visual-label{
+  position:relative;z-index:1;
+  font-family:'Crimson Text',serif;font-style:italic;
+  color:rgba(212,150,12,0.25);font-size:0.9rem;
+}
+.cafe-content{
+  padding:80px 72px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.menu-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:32px;margin:36px 0;
+}
+.menu-col h4{
+  font-family:'Cinzel',serif;font-size:0.78rem;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:16px;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(212,150,12,0.2);
+}
+.menu-col ul{list-style:none;}
+.menu-col li{
+  font-size:0.95rem;
+  color:rgba(247,238,216,0.6);
+  padding:6px 0;
+  border-bottom:1px solid rgba(247,238,216,0.04);
+  display:flex;align-items:center;gap:8px;
+}
+.menu-col li::before{content:'·';color:var(--gold);font-size:1.2rem;flex-shrink:0;}
+@media(max-width:900px){.cafe{grid-template-columns:1fr;}.cafe-content{padding:60px 36px;}.cafe-visual{min-height:340px;}}
+
+/* ════════════════════════════════════
+   ADVENTURES — CARDS ON DARK
+════════════════════════════════════ */
+.adventures{background:var(--moss);padding:100px 60px;position:relative;overflow:hidden;}
+.gallery{background:var(--forest-deep);padding:100px 60px;position:relative;overflow:hidden;}
+
+/* Ambient sparkle field for dark sections */
+.sparkle{position:absolute;width:3px;height:3px;background:var(--gold-bright);border-radius:50%;opacity:0;box-shadow:0 0 7px 2px rgba(240,184,74,0.55);animation:sparkleTwinkle 4.5s ease-in-out infinite;pointer-events:none;z-index:1;}
+@keyframes sparkleTwinkle{0%,100%{opacity:0;transform:scale(0.4);}50%{opacity:0.85;transform:scale(1.3);}}
+
+/* Idle shine sweep on primary gold buttons */
+.btn-gold,.nav-book{position:relative;overflow:hidden;}
+.btn-gold::after,.nav-book::after{
+  content:'';position:absolute;top:0;left:-60%;width:35%;height:100%;
+  background:linear-gradient(115deg,transparent,rgba(255,255,255,0.5),transparent);
+  transform:skewX(-20deg);pointer-events:none;
+  animation:btnShine 6s ease-in-out infinite;
+}
+@keyframes btnShine{
+  0%,10%{left:-60%;}
+  35%,100%{left:130%;}
+}
+
+/* Poetic epigraph */
+.epigraph{
+  text-align:center;font-family:'Crimson Text',serif;font-style:italic;
+  font-size:1.15rem;color:rgba(212,150,12,0.55);
+  max-width:520px;margin:0 auto 48px;line-height:1.8;
+  position:relative;z-index:1;
+}
+.adventures-inner{max-width:1200px;margin:0 auto;}
+.adventures-header{margin-bottom:64px;}
+.adv-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:24px;
+}
+.adv-card{
+  background:rgba(0,0,0,0.3);
+  border:1px solid rgba(212,150,12,0.1);
+  padding:44px 40px;
+  transition:all 0.35s;
+  position:relative;overflow:hidden;
+}
+.adv-card::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  transform:scaleX(0);transition:transform 0.4s;
+}
+.adv-card:hover{background:rgba(212,150,12,0.04);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,0.4);}
+.adv-card:hover::after{transform:scaleX(1);}
+.adv-number{
+  font-family:'Cinzel',serif;
+  font-size:3.5rem;font-weight:700;
+  color:rgba(212,150,12,0.08);
+  position:absolute;top:20px;right:28px;
+  line-height:1;letter-spacing:-0.02em;
+}
+.adv-icon{font-size:2rem;margin-bottom:20px;display:block;}
+.adv-icon-svg{width:40px;height:40px;margin-bottom:22px;display:block;color:var(--gold-bright);opacity:0.85;transition:transform 0.35s;}
+.adv-card:hover .adv-icon-svg{transform:translateY(-3px);}
+.adv-title{
+  font-family:'Cinzel',serif;font-size:1.1rem;font-weight:600;
+  color:var(--parchment);margin-bottom:12px;letter-spacing:0.03em;
+}
+.adv-body{font-size:0.95rem;color:rgba(247,238,216,0.55);line-height:1.85;margin-bottom:20px;}
+.adv-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.adv-pill{
+  font-size:0.7rem;font-family:'Cinzel',serif;
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--gold);
+  border:1px solid rgba(212,150,12,0.25);
+  padding:3px 10px;
+}
+@media(max-width:768px){.adventures{padding:72px 24px;}.adv-grid{grid-template-columns:1fr;}}
+
+/* ════════════════════════════════════
+   GALLERY — MOSAIC
+════════════════════════════════════ */
+.gallery-inner{max-width:1200px;margin:0 auto;}
+.gallery-header{margin-bottom:56px;}
+.gallery-mosaic{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:repeat(3,200px);
+  gap:8px;
+}
+.g-item{
+  position:relative;overflow:hidden;
+  background:var(--moss);
+  cursor:pointer;
+  transition:transform 0.4s;
+}
+.g-item:hover{z-index:2;transform:scale(1.02);}
+.g-item.tall{grid-row:span 2;}
+.g-item.wide{grid-column:span 2;}
+.g-placeholder{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#162616,#0a110a);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:8px;
+  transition:transform 0.5s;
+}
+.g-item:hover .g-placeholder{transform:scale(1.05);}
+.g-icon{font-size:1.8rem;opacity:0.2;}
+.g-icon-svg{width:34px;height:34px;color:var(--gold-bright);opacity:0.32;transition:opacity 0.3s,transform 0.3s;}
+.g-item:hover .g-icon-svg{opacity:0.6;transform:translateY(-2px);}
+.g-label{
+  font-family:'Crimson Text',serif;font-style:italic;
+  color:rgba(212,150,12,0.2);font-size:0.78rem;
+  text-align:center;padding:0 12px;
+}
+.g-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 40%,rgba(6,12,6,0.85) 100%);
+  opacity:0;transition:opacity 0.35s;
+  display:flex;align-items:flex-end;padding:20px;
+}
+.g-item:hover .g-overlay{opacity:1;}
+.g-caption{
+  font-family:'Cinzel',serif;font-size:0.7rem;
+  letter-spacing:0.1em;color:var(--gold-bright);
+}
+.gallery-note{
+  text-align:center;margin-top:36px;
+  font-family:'Crimson Text',serif;font-style:italic;
+  color:rgba(168,188,152,0.35);font-size:0.95rem;
+}
+@media(max-width:900px){
+  .gallery{padding:72px 24px;}
+  .gallery-mosaic{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(4,180px);}
+  .g-item.wide{grid-column:span 1;}
+  .g-item.tall{grid-row:span 1;}
+}
+
+/* ════════════════════════════════════
+   REACH
+════════════════════════════════════ */
+.reach{
+  background:var(--aged);
+  padding:100px 60px;
+}
+.reach-inner{max-width:1200px;margin:0 auto;}
+.reach-layout{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;margin-top:64px;align-items:start;
+}
+.reach-map-box{
+  background:var(--forest);
+  aspect-ratio:4/3;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:12px;
+  border:1px solid rgba(212,150,12,0.1);
+  position:sticky;top:80px;
+}
+.reach-map-icon{font-size:3rem;opacity:0.2;}
+.reach-map-text{
+  font-family:'Crimson Text',serif;font-style:italic;
+  color:rgba(212,150,12,0.3);font-size:0.9rem;
+}
+.reach-routes{display:flex;flex-direction:column;gap:20px;}
+.reach-route{
+  padding:28px 32px;
+  border-left:3px solid var(--gold);
+  background:var(--cream);
+  transition:transform 0.25s;
+}
+.reach-route:hover{transform:translateX(4px);}
+.reach-route-name{
+  font-family:'Cinzel',serif;font-size:0.85rem;
+  letter-spacing:0.08em;color:var(--forest);
+  margin-bottom:8px;text-transform:uppercase;
+}
+.reach-route-desc{font-size:0.95rem;color:var(--text-muted);line-height:1.75;}
+.reach-address-box{
+  background:var(--forest-deep);
+  padding:32px;margin-top:24px;
+  border:1px solid rgba(212,150,12,0.08);
+}
+.reach-address-title{
+  font-family:'Cinzel',serif;font-size:0.75rem;
+  letter-spacing:0.12em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:12px;
+}
+.reach-address-text{
+  font-size:0.95rem;color:rgba(247,238,216,0.7);
+  line-height:1.8;
+}
+.reach-local-note{
+  margin-top:12px;
+  font-family:'Crimson Text',serif;font-style:italic;
+  color:rgba(212,150,12,0.5);font-size:0.88rem;
+}
+@media(max-width:900px){.reach{padding:72px 24px;}.reach-layout{grid-template-columns:1fr;gap:48px;}.reach-map-box{position:static;}}
+
+/* ════════════════════════════════════
+   REVIEWS
+════════════════════════════════════ */
+.reviews{background:var(--forest-deep);padding:100px 60px;}
+.reviews-inner{max-width:1200px;margin:0 auto;}
+.reviews-header{margin-bottom:64px;}
+.reviews-row{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;background:rgba(212,150,12,0.06);
+}
+.review{
+  background:var(--forest-deep);
+  padding:48px 40px;
+  transition:background 0.3s;
+}
+.review:hover{background:rgba(212,150,12,0.03);}
+.review-stars{
+  color:var(--gold);
+  letter-spacing:4px;font-size:0.85rem;
+  margin-bottom:20px;display:block;
+}
+.review-text{
+  font-family:'Crimson Text',serif;font-style:italic;
+  font-size:1.05rem;color:rgba(247,238,216,0.7);
+  line-height:1.85;margin-bottom:28px;
+}
+.review-divider{
+  width:32px;height:1px;
+  background:var(--gold);opacity:0.4;
+  margin-bottom:16px;
+}
+.review-name{
+  font-family:'Cinzel',serif;font-size:0.8rem;
+  letter-spacing:0.08em;color:var(--parchment);
+}
+.review-from{font-size:0.82rem;color:var(--gold);margin-top:3px;}
+@media(max-width:900px){.reviews{padding:72px 24px;}.reviews-row{grid-template-columns:1fr;}}
+
+/* ════════════════════════════════════
+   BOOKING
+════════════════════════════════════ */
+.booking{
+  background:var(--bark);
+  padding:100px 60px;
+}
+.booking-inner{max-width:1200px;margin:0 auto;}
+.booking-layout{
+  display:grid;grid-template-columns:1fr 1.5fr;
+  gap:80px;margin-top:64px;align-items:start;
+}
+.booking-sidebar{color:var(--parchment);}
+.b-detail{
+  padding:24px 0;
+  border-bottom:1px solid rgba(212,150,12,0.1);
+  display:flex;gap:16px;align-items:flex-start;
+}
+.b-detail:last-child{border-bottom:none;}
+.b-icon{font-size:1.3rem;flex-shrink:0;padding-top:2px;}
+.b-label{
+  font-family:'Cinzel',serif;font-size:0.72rem;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:4px;display:block;
+}
+.b-val{font-size:0.95rem;color:rgba(247,238,216,0.65);line-height:1.7;}
+.booking-form-box{
+  background:var(--parchment);
+  padding:52px;
+}
+.form-title{
+  font-family:'Cinzel',serif;font-size:1.1rem;
+  color:var(--forest);margin-bottom:32px;
+  letter-spacing:0.04em;
+}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.f-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.f-label{
+  font-family:'Cinzel',serif;font-size:0.68rem;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--text-muted);
+}
+.f-input,.f-select,.f-textarea{
+  background:var(--cream);
+  border:1px solid rgba(61,43,26,0.15);
+  padding:13px 16px;
+  font-family:'Crimson Text',serif;font-size:1rem;
+  color:var(--text-body);outline:none;
+  transition:border-color 0.2s;width:100%;
+  -webkit-appearance:none;appearance:none;
+}
+.f-input::placeholder{color:rgba(42,37,26,0.3);}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--gold);}
+.f-textarea{height:96px;resize:vertical;}
+.f-submit{
+  width:100%;
+  background:var(--forest-deep);
+  color:var(--gold-bright);
+  border:none;padding:18px;
+  font-family:'Cinzel',serif;
+  font-size:0.78rem;letter-spacing:0.16em;text-transform:uppercase;
+  cursor:pointer;transition:all 0.3s;margin-top:8px;
+}
+.f-submit:hover{background:var(--gold);color:var(--forest-deep);transform:translateY(-1px);}
+.f-note{
+  text-align:center;font-size:0.82rem;
+  color:var(--text-muted);margin-top:12px;font-style:italic;
+}
+#formMsg{
+  text-align:center;padding:10px;
+  font-family:'Cinzel',serif;font-size:0.78rem;
+  min-height:24px;color:var(--gold);margin-top:8px;
+}
+@media(max-width:900px){
+  .booking{padding:72px 24px;}
+  .booking-layout{grid-template-columns:1fr;gap:48px;}
+  .booking-form-box{padding:36px 28px;}
+  .f-row{grid-template-columns:1fr;}
+}
+
+/* ════════════════════════════════════
+   CONTACT
+════════════════════════════════════ */
+.contact{background:var(--forest);padding:100px 60px;}
+.contact-inner{max-width:1200px;margin:0 auto;}
+.contact-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;margin-top:56px;
+  background:rgba(212,150,12,0.06);
+}
+.c-card{
+  background:var(--forest);
+  padding:48px 40px;text-align:center;
+  transition:background 0.3s;
+}
+.c-card:hover{background:rgba(212,150,12,0.04);}
+.c-icon{font-size:2rem;margin-bottom:20px;display:block;}
+.c-title{
+  font-family:'Cinzel',serif;font-size:0.78rem;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;
+}
+.c-val{font-size:0.95rem;color:rgba(247,238,216,0.65);line-height:1.8;}
+.c-val a{color:rgba(247,238,216,0.65);text-decoration:none;transition:color 0.2s;}
+.c-val a:hover{color:var(--gold-bright);}
+@media(max-width:768px){.contact{padding:72px 24px;}.contact-grid{grid-template-columns:1fr;}}
+
+/* ════════════════════════════════════
+   FOOTER
+════════════════════════════════════ */
+footer{
+  background:var(--forest-deep);
+  padding:64px 60px 48px;
+  border-top:1px solid rgba(212,150,12,0.08);
+}
+.footer-inner{max-width:1200px;margin:0 auto;}
+.footer-top{
+  display:grid;grid-template-columns:2fr 1fr 1fr;
+  gap:64px;margin-bottom:56px;
+}
+.footer-brand-name{
+  font-family:'Cinzel',serif;
+  font-size:1.4rem;font-weight:600;
+  color:var(--gold-bright);
+  letter-spacing:0.12em;margin-bottom:12px;
+}
+.footer-tagline{
+  font-family:'Crimson Text',serif;font-style:italic;
+  font-size:1rem;color:rgba(247,238,216,0.35);
+  line-height:1.7;max-width:300px;
+}
+.footer-col-title{
+  font-family:'Cinzel',serif;font-size:0.68rem;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:20px;
+}
+.footer-links-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-links-list a{
+  font-size:0.9rem;color:rgba(247,238,216,0.4);
+  text-decoration:none;transition:color 0.2s;
+  font-family:'Crimson Text',serif;
+}
+.footer-links-list a:hover{color:var(--gold-bright);}
+.footer-flourish{width:100%;max-width:400px;height:24px;display:block;margin:0 auto 32px;}
+.footer-bottom{
+  padding-top:32px;border-top:1px solid rgba(212,150,12,0.08);
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;
+}
+.footer-copy{font-size:0.8rem;color:rgba(247,238,216,0.2);}
+.footer-made{
+  font-family:'Crimson Text',serif;font-style:italic;
+  font-size:0.85rem;color:rgba(247,238,216,0.2);
+}
+@media(max-width:768px){footer{padding:56px 24px 40px;}.footer-top{grid-template-columns:1fr;gap:36px;}.footer-bottom{flex-direction:column;text-align:center;}}
+
+/* ════════════════════════════════════
+   CUSTOM CURSOR
+════════════════════════════════════ */
+.cursor-dot{
+  position:fixed;top:0;left:0;
+  width:8px;height:8px;background:var(--gold-bright);
+  border-radius:50%;pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:opacity 0.3s;
+  opacity:0;
+}
+.cursor-dot.active{opacity:1;}
+.cursor-ring{
+  position:fixed;top:0;left:0;
+  width:36px;height:36px;border:1px solid rgba(212,150,12,0.6);
+  border-radius:50%;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform 0.35s cubic-bezier(.2,.6,.3,1),
+             width 0.3s,height 0.3s,border-color 0.3s,background 0.3s,opacity 0.3s;
+  opacity:0;
+}
+.cursor-ring.active{opacity:1;}
+.cursor-ring.hover{
+  width:64px;height:64px;
+  background:rgba(212,150,12,0.08);
+  border-color:var(--gold-bright);
+}
+@media(max-width:900px){.cursor-dot,.cursor-ring{display:none;}}
+
+/* ════════════════════════════════════
+   SCROLL PROGRESS
+════════════════════════════════════ */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-bright));
+  z-index:9997;width:0%;
+  box-shadow:0 0 10px rgba(212,150,12,0.6);
+  transition:width 0.1s;
+}
+
+/* ════════════════════════════════════
+   TILT CARDS
+════════════════════════════════════ */
+.tilt-card{transition:transform 0.25s ease,box-shadow 0.25s ease;transform-style:preserve-3d;will-change:transform;}
+
+/* ════════════════════════════════════
+   LIGHTBOX
+════════════════════════════════════ */
+.lightbox{
+  position:fixed;inset:0;z-index:5000;
+  background:rgba(6,12,6,0.96);
+  display:none;align-items:center;justify-content:center;
+  padding:40px;
+}
+.lightbox.open{display:flex;animation:fadeIn 0.3s;}
+.lightbox-box{
+  max-width:700px;width:100%;
+  background:linear-gradient(135deg,#162616,#0a110a);
+  border:1px solid rgba(212,150,12,0.25);
+  padding:60px 40px;text-align:center;
+  position:relative;
+}
+.lightbox-icon{opacity:0.5;margin-bottom:20px;display:flex;justify-content:center;}
+.lb-icon-svg{width:90px;height:90px;color:var(--gold-bright);}
+.lightbox-title{
+  font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold-bright);
+  letter-spacing:0.04em;margin-bottom:12px;
+}
+.lightbox-sub{
+  font-family:'Crimson Text',serif;font-style:italic;
+  color:rgba(247,238,216,0.5);font-size:1rem;
+}
+.lightbox-close{
+  position:absolute;top:-48px;right:0;
+  width:40px;height:40px;border:1px solid rgba(212,150,12,0.4);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:var(--gold-bright);font-size:1.2rem;cursor:pointer;
+  background:rgba(6,12,6,0.6);transition:all 0.2s;
+}
+.lightbox-close:hover{background:var(--gold);color:var(--forest-deep);transform:rotate(90deg);}
+
+/* ════════════════════════════════════
+   REAL MAP EMBED
+════════════════════════════════════ */
+.map-embed{
+  width:100%;height:100%;min-height:340px;
+  border:0;filter:grayscale(0.3) sepia(0.15) brightness(0.85) contrast(1.05);
+  transition:filter 0.4s;
+}
+.map-embed:hover{filter:grayscale(0) sepia(0) brightness(1) contrast(1);}
+.reach-map-box{padding:0;overflow:hidden;}
+
+/* ════════════════════════════════════
+   TESTIMONIAL CAROUSEL
+════════════════════════════════════ */
+.reviews-carousel{position:relative;overflow:hidden;margin-top:56px;}
+.reviews-track{display:flex;transition:transform 0.6s cubic-bezier(.4,0,.2,1);}
+.review-slide{min-width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(212,150,12,0.06);}
+.carousel-dots{display:flex;gap:10px;justify-content:center;margin-top:32px;}
+.c-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(212,150,12,0.25);cursor:pointer;
+  transition:all 0.3s;border:none;padding:0;
+}
+.c-dot.active{background:var(--gold-bright);width:28px;border-radius:4px;}
+@media(max-width:900px){.review-slide{grid-template-columns:1fr;}}
+
+/* ════════════════════════════════════
+   COUNT-UP STATS
+════════════════════════════════════ */
+.stat-num{transition:none;}
+
+/* ════════════════════════════════════
+   FAQ ACCORDION
+════════════════════════════════════ */
+.faq{background:var(--parchment);padding:100px 60px;}
+.faq-inner{max-width:900px;margin:0 auto;}
+.faq-header{margin-bottom:56px;}
+.faq-item{
+  border-bottom:1px solid rgba(61,43,26,0.15);
+  padding:24px 0;cursor:pointer;
+}
+.faq-q{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'Cinzel',serif;font-size:1rem;
+  color:var(--forest);letter-spacing:0.02em;
+}
+.faq-icon{
+  font-size:1.3rem;color:var(--gold);
+  transition:transform 0.3s;flex-shrink:0;margin-left:20px;
+}
+.faq-item.open .faq-icon{transform:rotate(45deg);}
+.faq-a{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.4s ease,padding-top 0.4s ease;
+  font-size:0.98rem;color:var(--text-muted);line-height:1.85;
+}
+.faq-item.open .faq-a{max-height:200px;padding-top:16px;}
+@media(max-width:768px){.faq{padding:72px 24px;}}
+
+/* ════════════════════════════════════
+   MAGNETIC BUTTON
+════════════════════════════════════ */
+.magnetic{position:relative;display:inline-block;}
+
+/* ════════════════════════════════════
+   WHATSAPP
+════════════════════════════════════ */
+.wa-btn{
+  position:fixed;bottom:32px;right:32px;z-index:300;
+  width:58px;height:58px;background:#25d366;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  text-decoration:none;
+  box-shadow:0 4px 24px rgba(37,211,102,0.45);
+  animation:waPulse 3s infinite;
+  transition:transform 0.2s;
+}
+.wa-btn:hover{transform:scale(1.12);}
+.wa-btn svg{width:28px;height:28px;fill:white;}
+@keyframes waPulse{
+  0%,100%{box-shadow:0 4px 24px rgba(37,211,102,0.45);}
+  50%{box-shadow:0 4px 48px rgba(37,211,102,0.7);}
+}
+
+/* ════════════════════════════════════
+   SECTION PADDING HELPERS
+════════════════════════════════════ */
+.pt-0{padding-top:0;}.pb-0{padding-bottom:0;}
+
+/* ════════════════════════════════════
+   REVEAL
+════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-24px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal-left.in{opacity:1;transform:translateX(0);}
+</style>
+</head>
+<body>
+
+<!-- Reusable hand-drawn icon library -->
+<svg style="display:none" aria-hidden="true">
+  <defs>
+    <symbol id="icon-peak" viewBox="0 0 48 48">
+      <path d="M3,40 L17,15 L24,26 L33,9 L45,40 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      <circle cx="33" cy="9" r="1.4" fill="currentColor"/>
+    </symbol>
+    <symbol id="icon-tent" viewBox="0 0 48 48">
+      <path d="M8,40 L24,12 L40,40 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M24,12 L24,40 M17,40 L24,26 L31,40" fill="none" stroke="currentColor" stroke-width="1.1"/>
+      <circle cx="10" cy="10" r="1.2" fill="currentColor"/>
+      <circle cx="18" cy="6" r="1" fill="currentColor"/>
+      <circle cx="38" cy="12" r="1.2" fill="currentColor"/>
+    </symbol>
+    <symbol id="icon-flag-peak" viewBox="0 0 48 48">
+      <path d="M4,40 L20,12 L28,24 L36,8 L44,40 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      <line x1="36" y1="8" x2="36" y2="0" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M36,0 L44,3 L36,6 Z" fill="currentColor" opacity="0.85"/>
+    </symbol>
+    <symbol id="icon-waterfall" viewBox="0 0 48 48">
+      <path d="M10,8 Q24,4 38,8 L34,16 Q24,12 14,16 Z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M18,17 Q16,28 18,40" fill="none" stroke="currentColor" stroke-width="1.1"/>
+      <path d="M24,17 Q22,28 24,40" fill="none" stroke="currentColor" stroke-width="1.1"/>
+      <path d="M30,17 Q28,28 30,40" fill="none" stroke="currentColor" stroke-width="1.1"/>
+      <ellipse cx="24" cy="41" rx="16" ry="3" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    </symbol>
+    <symbol id="icon-sun" viewBox="0 0 48 48">
+      <line x1="4" y1="32" x2="44" y2="32" stroke="currentColor" stroke-width="1.3"/>
+      <path d="M10,32 Q24,10 38,32" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="24" y1="4" x2="24" y2="9" stroke="currentColor" stroke-width="1.1"/>
+      <line x1="12" y1="9" x2="15" y2="13" stroke="currentColor" stroke-width="1.1"/>
+      <line x1="36" y1="9" x2="33" y2="13" stroke="currentColor" stroke-width="1.1"/>
+    </symbol>
+    <symbol id="icon-cup" viewBox="0 0 48 48">
+      <path d="M12,20 L34,20 L32,36 Q31,40 26,40 L20,40 Q15,40 14,36 Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M34,22 Q42,22 42,30 Q42,37 34,35" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M18,14 Q16,10 19,6 M25,14 Q23,9 26,4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+    </symbol>
+    <symbol id="icon-leaf-path" viewBox="0 0 48 48">
+      <path d="M24,6 Q38,16 30,32 Q22,38 16,30 Q10,20 24,6 Z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <line x1="24" y1="6" x2="20" y2="32" stroke="currentColor" stroke-width="0.9" opacity="0.7"/>
+      <path d="M6,44 Q16,38 24,42 Q32,46 42,40" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="1.5,4" opacity="0.7"/>
+    </symbol>
+    <symbol id="icon-stars" viewBox="0 0 48 48">
+      <path d="M12,10 L14,16 L20,17 L14,20 L12,26 L10,20 L4,17 L10,16 Z" fill="currentColor" opacity="0.8"/>
+      <circle cx="32" cy="12" r="1.6" fill="currentColor"/>
+      <circle cx="38" cy="24" r="1.2" fill="currentColor"/>
+      <circle cx="28" cy="32" r="1.8" fill="currentColor"/>
+      <path d="M12,26 L28,32" stroke="currentColor" stroke-width="0.6" opacity="0.35"/>
+    </symbol>
+    <symbol id="icon-plate" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <circle cx="24" cy="24" r="10" fill="none" stroke="currentColor" stroke-width="0.9" opacity="0.6"/>
+      <path d="M10,10 L10,20 M8,10 L8,20 M8,20 Q8,22 10,22 L10,38 M12,10 L12,20 Q12,22 10,22" stroke="currentColor" stroke-width="0.9" opacity="0.75"/>
+      <path d="M38,10 L38,24 Q38,27 35,27 L35,38 M38,10 Q34,12 34,17 Q34,22 38,24" stroke="currentColor" stroke-width="0.9" opacity="0.75"/>
+    </symbol>
+    <symbol id="icon-bunk" viewBox="0 0 48 48">
+      <rect x="8" y="10" width="30" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <rect x="8" y="26" width="30" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <line x1="8" y1="10" x2="8" y2="41" stroke="currentColor" stroke-width="1.3"/>
+      <line x1="38" y1="10" x2="38" y2="41" stroke="currentColor" stroke-width="1.3"/>
+      <line x1="8" y1="41" x2="38" y2="41" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+    </symbol>
+    <symbol id="icon-range" viewBox="0 0 48 48">
+      <path d="M2,36 L14,18 L21,27 L30,12 L46,36 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M30,12 L36,20 L42,15" fill="none" stroke="currentColor" stroke-width="1" opacity="0.55"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- Custom cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Scroll progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-box">
+    <div class="lightbox-close" onclick="closeLightbox()">✕</div>
+    <div class="lightbox-icon" id="lbIcon"><svg class="lb-icon-svg"><use id="lbIconUse" href="#icon-sun"/></svg></div>
+    <div class="lightbox-title" id="lbTitle">Sunrise View</div>
+    <div class="lightbox-sub">Your photo will appear here once uploaded</div>
+  </div>
+</div>
+
+<!-- WhatsApp -->
+<a href="https://wa.me/919736892850" target="_blank" class="wa-btn" title="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Dreamcatcher</a>
+  <ul class="nav-links">
+    <li><a href="#story">Story</a></li>
+    <li><a href="#rooms">Stay</a></li>
+    <li><a href="#cafe">Cafe</a></li>
+    <li><a href="#adventures">Trek</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#booking">Book</a></li>
+  </ul>
+  <a href="#booking" class="nav-book">Reserve a Stay</a>
+</nav>
+
+<!-- ════ HERO ════ -->
+<section class="hero" id="home">
+  <div class="hero-sky"></div>
+  <div class="aurora-wash"></div>
+  <canvas id="starCanvas"></canvas>
+  <div class="hero-glow"></div>
+
+  <!-- Mountain silhouettes - artistic ink-line style -->
+  <div class="mtns">
+    <svg class="mtn-far" viewBox="0 0 1440 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,400 L0,260 Q60,220 90,230 L160,270 Q200,200 240,170 L290,230 Q340,150 420,130 Q460,180 520,210 Q570,110 620,90 Q660,150 700,130 Q740,60 790,70 Q830,130 880,150 Q920,80 980,120 Q1020,180 1080,160 Q1120,90 1160,100 Q1210,170 1280,150 Q1320,110 1360,140 L1440,160 L1440,400 Z"/>
+    </svg>
+    <svg class="mtn-mid" viewBox="0 0 1440 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,360 L0,270 Q50,240 80,250 L160,280 Q210,220 250,200 L320,250 Q370,170 430,180 Q470,220 520,230 Q580,140 640,155 Q680,200 740,190 Q790,120 850,140 Q900,190 960,200 Q1010,150 1060,220 Q1110,170 1160,180 Q1220,230 1280,200 Q1330,170 1360,185 L1440,220 L1440,360 Z"/>
+    </svg>
+    <svg class="mtn-near" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,320 L0,255 Q40,235 70,245 L140,260 Q190,225 230,220 L300,250 Q350,205 410,215 Q450,240 510,205 Q560,235 620,215 Q670,180 730,195 Q780,235 840,215 Q890,180 950,210 Q1000,245 1060,210 Q1110,235 1160,215 Q1220,245 1280,220 Q1340,235 1380,220 L1440,240 L1440,320 Z"/>
+    </svg>
+
+    <!-- Cubist collage planes - cut-paper facets of colour crossing the ridgeline -->
+    <svg class="cubist-overlay" viewBox="0 0 1440 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <polygon points="80,180 340,90 460,230 190,290" fill="#c8960a" opacity="0.13" style="mix-blend-mode:overlay"/>
+      <polygon points="520,60 760,140 690,260 470,210" fill="#7a9468" opacity="0.14" style="mix-blend-mode:overlay"/>
+      <polygon points="820,150 1080,80 1160,220 900,260" fill="#f0b84a" opacity="0.1" style="mix-blend-mode:overlay"/>
+      <polygon points="1120,110 1360,60 1440,200 1200,230" fill="#3a2010" opacity="0.18" style="mix-blend-mode:soft-light"/>
+      <polygon points="260,220 480,260 420,330 200,320" fill="#d4960c" opacity="0.09" style="mix-blend-mode:overlay"/>
+      <!-- hand-inked contour strokes retracing the ridgeline, slightly offset -->
+      <path d="M60,190 Q220,110 360,175 Q480,90 600,150" fill="none" stroke="#f0b84a" stroke-width="1" opacity="0.22"/>
+      <path d="M700,130 Q850,190 950,110 Q1080,170 1220,100" fill="none" stroke="#d4960c" stroke-width="0.8" opacity="0.2"/>
+      <path d="M900,240 Q1050,260 1180,205 Q1300,250 1420,215" fill="none" stroke="#f0b84a" stroke-width="0.8" opacity="0.16"/>
+    </svg>
+  </div>
+
+  <!-- A lone traveller, sketched in a single gestural line -->
+  <svg class="hero-wanderer" viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="30" cy="13" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M30,20 L29,48 M29,30 L16,40 M29,29 L43,18 L48,6 M29,48 L18,80 M29,48 L41,78" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+  <!-- Artistic hand-drawn dreamcatcher illustration -->
+  <svg class="hero-dreamcatcher" viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="dcGlow" cx="50%" cy="35%" r="60%">
+        <stop offset="0%" stop-color="#f0b84a" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#f0b84a" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <circle cx="160" cy="110" r="120" fill="url(#dcGlow)"/>
+    <!-- outer ring -->
+    <circle cx="160" cy="110" r="82" fill="none" stroke="#d4960c" stroke-width="2.5" opacity="0.85"/>
+    <circle cx="160" cy="110" r="82" fill="none" stroke="#f0b84a" stroke-width="0.6" opacity="0.4"/>
+    <!-- woven web pattern -->
+    <g stroke="#d4960c" stroke-width="1" fill="none" opacity="0.65">
+      <path d="M160,28 Q120,60 108,95 Q145,80 160,52 Q175,80 212,95 Q200,60 160,28 Z"/>
+      <path d="M242,110 Q210,150 175,162 Q190,125 218,110 Q190,95 175,58 Q210,70 242,110 Z"/>
+      <path d="M160,192 Q200,160 212,125 Q175,140 160,168 Q145,140 108,125 Q120,160 160,192 Z"/>
+      <path d="M78,110 Q110,70 145,58 Q130,95 102,110 Q130,125 145,162 Q110,150 78,110 Z"/>
+    </g>
+    <circle cx="160" cy="110" r="38" fill="none" stroke="#f0b84a" stroke-width="1" opacity="0.5"/>
+    <circle cx="160" cy="110" r="5" fill="#f0b84a" opacity="0.7"/>
+    <!-- hanging threads and feathers -->
+    <g opacity="0.75">
+      <line x1="120" y1="188" x2="112" y2="260" stroke="#d4960c" stroke-width="1"/>
+      <path d="M112,260 Q104,275 112,296 Q120,275 112,260 Z" fill="#d4960c" opacity="0.6"/>
+      <line x1="160" y1="192" x2="160" y2="290" stroke="#d4960c" stroke-width="1"/>
+      <path d="M160,290 Q150,308 160,335 Q170,308 160,290 Z" fill="#f0b84a" opacity="0.65"/>
+      <line x1="200" y1="188" x2="210" y2="250" stroke="#d4960c" stroke-width="1"/>
+      <path d="M210,250 Q202,266 210,286 Q218,266 210,250 Z" fill="#d4960c" opacity="0.55"/>
+      <circle cx="112" cy="252" r="2" fill="#f0b84a"/>
+      <circle cx="160" cy="282" r="2.5" fill="#f0b84a"/>
+      <circle cx="210" cy="242" r="2" fill="#f0b84a"/>
+    </g>
+  </svg>
+
+  <!-- Floating ink-dot constellation -->
+  <svg class="hero-constellation" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#f0b84a" stroke-width="0.4" opacity="0.3">
+      <line x1="60" y1="40" x2="130" y2="80"/>
+      <line x1="130" y1="80" x2="110" y2="150"/>
+      <line x1="130" y1="80" x2="200" y2="60"/>
+    </g>
+    <g fill="#f0b84a" opacity="0.5">
+      <circle cx="60" cy="40" r="1.8"/>
+      <circle cx="130" cy="80" r="1.8"/>
+      <circle cx="110" cy="150" r="1.8"/>
+      <circle cx="200" cy="60" r="1.8"/>
+    </g>
+  </svg>
+
+  <div class="hero-content">
+    <span class="hero-eyebrow">Dharamkot · Dharamshala · Himachal Pradesh</span>
+    <h1 class="hero-title">
+      Where Mountains<br>Become
+      <em>Home</em>
+      <svg class="brush-underline" viewBox="0 0 220 20" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2,12 Q40,4 80,10 Q130,16 170,8 Q195,4 218,10" stroke="#d4960c" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.55"/>
+        <path d="M4,10 Q45,15 85,8 Q135,3 175,12 Q198,15 216,9" stroke="#f0b84a" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.45"/>
+      </svg>
+    </h1>
+    <p class="hero-sub">A quiet place above the world. Eight rooms that wake with the sun. A cafe where time slows down. Trails that take you somewhere you didn't know you needed to go.</p>
+    <div class="hero-btns">
+      <a href="#booking" class="btn-gold">Book Your Stay</a>
+      <a href="#story" class="btn-outline">Our Story</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <span class="scroll-label">scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ════ STATS ════ -->
+<div class="stat-bar">
+  <div class="stat-item">
+    <span class="stat-num" data-target="8" data-suffix="">0</span>
+    <span class="stat-label">Rooms & dorms</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" data-target="4" data-suffix="+">0</span>
+    <span class="stat-label">Treks from the door</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" data-target="7000" data-suffix="ft" data-format="comma">0</span>
+    <span class="stat-label">Above sea level</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" data-static="∞">∞</span>
+    <span class="stat-label">Sunrises waiting</span>
+  </div>
+</div>
+
+<!-- ════ STORY ════ -->
+<section class="story" id="story">
+  <div class="story-visual">
+    <div class="story-visual-inner">
+      <div class="paint-wash wash-a"></div>
+      <svg class="story-art" viewBox="0 0 300 380" xmlns="http://www.w3.org/2000/svg">
+        <!-- distant peaks -->
+        <path d="M0,180 L40,120 L75,155 L120,80 L160,150 L210,100 L250,160 L300,130 L300,190 L0,190 Z" fill="none" stroke="#d4960c" stroke-width="1" opacity="0.35"/>
+        <!-- mid ridge -->
+        <path d="M0,220 Q60,180 100,200 Q150,160 190,195 Q230,170 260,200 Q280,185 300,200 L300,240 L0,240 Z" fill="none" stroke="#f0b84a" stroke-width="1.2" opacity="0.5"/>
+        <!-- little hut -->
+        <g stroke="#f0b84a" stroke-width="1.3" fill="none" opacity="0.75">
+          <path d="M110,235 L110,200 L150,175 L190,200 L190,235 Z"/>
+          <line x1="110" y1="235" x2="190" y2="235"/>
+          <rect x="140" y="205" width="20" height="30"/>
+          <line x1="150" y1="175" x2="150" y2="160"/>
+          <path d="M145,160 Q150,150 155,160" opacity="0.6"/>
+        </g>
+        <!-- winding path -->
+        <path d="M40,300 Q90,270 120,285 Q160,300 190,270 Q230,250 270,265" fill="none" stroke="#d4960c" stroke-width="1" stroke-dasharray="2,5" opacity="0.5"/>
+        <!-- flying bird -->
+        <path d="M215,110 Q222,103 229,110 Q236,103 243,110" fill="none" stroke="#f0b84a" stroke-width="1.2" opacity="0.6"/>
+        <!-- moon -->
+        <circle cx="250" cy="60" r="18" fill="none" stroke="#f0b84a" stroke-width="1" opacity="0.4"/>
+        <path d="M258,48 Q246,60 258,72 Q244,66 244,60 Q244,54 258,48 Z" fill="#f0b84a" opacity="0.25"/>
+        <!-- scattered dots -->
+        <circle cx="60" cy="50" r="1.2" fill="#f0b84a" opacity="0.5"/>
+        <circle cx="180" cy="40" r="1" fill="#f0b84a" opacity="0.4"/>
+        <circle cx="30" cy="90" r="1" fill="#f0b84a" opacity="0.4"/>
+      </svg>
+      <div class="story-visual-label">A quiet corner of Dharamkot</div>
+    </div>
+    <div class="story-visual-border"></div>
+  </div>
+  <div class="story-text">
+    <span class="section-overline reveal-left">Our beginning</span>
+    <h2 class="section-heading heading-xl on-dark reveal-left">Born from a<br>traveller's promise</h2>
+    <br>
+    <p class="body-text body-dark reveal-left">Dreamcatcher began with a wish — to build a place where the mountains feel like home. Not a hotel. Not a resort. Something older and warmer than that. A dwelling where the door is always open and the chai is always on.</p>
+    <br>
+    <p class="body-text body-dark reveal-left">Perched above McLeod Ganj in the mist-wrapped village of Dharamkot, we sit at the edge of the Dhauladhar range — close enough to touch the clouds, far enough from the world to breathe again.</p>
+    <div class="pull-quote reveal-left">
+      <blockquote>"We spread love, not rules. Come as a stranger. Leave as someone who remembers."</blockquote>
+    </div>
+    <a href="https://www.instagram.com/dreamcatcher_homestays/" target="_blank" class="insta-link reveal-left">
+      ↗ Follow our story on Instagram
+    </a>
+  </div>
+</section>
+
+<!-- ════ FEATURES ════ -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="features-header reveal">
+      <span class="section-overline">What awaits you</span>
+      <h2 class="section-heading heading-lg on-dark">Everything you need.<br>Nothing you don't.</h2>
+    </div>
+    <div class="features-grid reveal">
+      <div class="feat">
+        <span class="feat-icon">🌅</span>
+        <h3 class="feat-title">Sunrise-Facing Rooms</h3>
+        <p class="feat-body">Eight rooms, all east-facing. Wake before the village stirs and watch the first gold light touch the Dhauladhar range. The most beautiful alarm clock you'll ever set.</p>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">☕</span>
+        <h3 class="feat-title">Dreamcatcher Cafe</h3>
+        <p class="feat-body">Where Indian warmth meets Middle Eastern soul. Morning chai, shakshuka at sunrise, falafel at dusk. A table with a view that makes you forget you had somewhere to be.</p>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">🏕️</span>
+        <h3 class="feat-title">Trek & Camp Adventures</h3>
+        <p class="feat-body">Triund at golden hour. Stars at 9,000 feet. Trails through oak and rhododendron forest. We know every path — let us show you the ones the maps don't have.</p>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">🤍</span>
+        <h3 class="feat-title">Judgement-Free Space</h3>
+        <p class="feat-body">Solo traveller, digital nomad, couple, seeker — you belong here. No rules pinned to the wall. Just an open door, good people, and the kind of quiet that cities never give you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ ROOMS ════ -->
+<section class="rooms" id="rooms">
+  <div class="rooms-inner">
+    <div class="rooms-header reveal">
+      <span class="section-overline">Choose your rest</span>
+      <h2 class="section-heading heading-lg on-light">A room for every<br>kind of dreamer</h2>
+      <p class="body-text body-light" style="margin-top:16px;font-style:italic;color:var(--text-muted);">Check-in 10:00 AM · Check-out 11:30 AM · Meals not included (Cafe right next door)</p>
+    </div>
+    <div class="rooms-stack reveal">
+
+      <!-- Room 1 -->
+      <div class="room-row tilt-card">
+        <div class="room-visual">
+          <div class="room-visual-bg"></div>
+          <div class="paint-wash wash-b"></div>
+          <svg class="room-art" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="36" fill="none" stroke="#f0b84a" stroke-width="1.4" opacity="0.7"/>
+            <g stroke="#d4960c" stroke-width="0.8" opacity="0.5">
+              <line x1="100" y1="40" x2="100" y2="55"/>
+              <line x1="100" y1="145" x2="100" y2="160"/>
+              <line x1="40" y1="100" x2="55" y2="100"/>
+              <line x1="145" y1="100" x2="160" y2="100"/>
+              <line x1="58" y1="58" x2="68" y2="68"/>
+              <line x1="132" y1="132" x2="142" y2="142"/>
+              <line x1="142" y1="58" x2="132" y2="68"/>
+              <line x1="68" y1="132" x2="58" y2="142"/>
+            </g>
+            <path d="M20,165 L55,140 L85,158 L120,120 L155,150 L180,135 L180,175 L20,175 Z" fill="none" stroke="#f0b84a" stroke-width="1.3" opacity="0.65"/>
+            <rect x="15" y="30" width="170" height="140" fill="none" stroke="#d4960c" stroke-width="1" opacity="0.3" rx="2"/>
+          </svg>
+          <span class="room-visual-label">Sunrise window, Room 1</span>
+          <span class="room-visual-badge">Most Loved</span>
+        </div>
+        <div class="room-info">
+          <h3 class="room-name">Sunrise Private Room</h3>
+          <p class="room-desc">East-facing private room with an unobstructed view of the Dhauladhar range. The kind of room where you wake up an hour early just to watch the mountains turn gold. You'll understand when you're here.</p>
+          <div class="room-pricing">
+            <div class="room-price-row">
+              <span class="price-big">₹1,500</span>
+              <span class="price-usd">≈ $18</span>
+              <span class="price-per">per night</span>
+            </div>
+          </div>
+          <div class="room-amenities">
+            <span class="amenity">Private room</span>
+            <span class="amenity">East facing</span>
+            <span class="amenity">Mountain view</span>
+            <span class="amenity">Sunrise</span>
+          </div>
+          <a href="#booking" class="btn-room">Book This Room</a>
+        </div>
+      </div>
+
+      <!-- Room 2 -->
+      <div class="room-row reverse tilt-card">
+        <div class="room-info" style="background:var(--cream);">
+          <h3 class="room-name">Budget Private Room</h3>
+          <p class="room-desc">Cozy, clean, completely yours. Mountain air through the window, silence when you need it, a bed that actually lets you sleep. Everything a traveller needs — nothing they don't.</p>
+          <div class="room-pricing">
+            <div class="room-price-row">
+              <span class="price-big">₹1,200</span>
+              <span class="price-usd">≈ $14</span>
+              <span class="price-per">per night</span>
+            </div>
+          </div>
+          <div class="room-amenities">
+            <span class="amenity">Private room</span>
+            <span class="amenity">Mountain air</span>
+            <span class="amenity">Best value</span>
+          </div>
+          <a href="#booking" class="btn-room">Book This Room</a>
+        </div>
+        <div class="room-visual">
+          <div class="room-visual-bg" style="background:linear-gradient(135deg,#1a2816,#0e180e);"></div>
+          <div class="paint-wash wash-c"></div>
+          <svg class="room-art" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50,150 L50,80 L100,50 L150,80 L150,150 Z" fill="none" stroke="#f0b84a" stroke-width="1.3" opacity="0.65"/>
+            <rect x="70" y="105" width="26" height="45" fill="none" stroke="#d4960c" stroke-width="1" opacity="0.5"/>
+            <circle cx="90" cy="127" r="1.5" fill="#f0b84a" opacity="0.6"/>
+            <rect x="110" y="95" width="24" height="24" fill="none" stroke="#d4960c" stroke-width="1" opacity="0.5"/>
+            <line x1="122" y1="95" x2="122" y2="119" stroke="#d4960c" stroke-width="0.6" opacity="0.4"/>
+            <line x1="110" y1="107" x2="134" y2="107" stroke="#d4960c" stroke-width="0.6" opacity="0.4"/>
+            <path d="M60,150 Q100,140 140,150" fill="none" stroke="#f0b84a" stroke-width="0.8" opacity="0.4"/>
+            <circle cx="164" cy="55" r="10" fill="none" stroke="#f0b84a" stroke-width="0.9" opacity="0.4"/>
+          </svg>
+          <span class="room-visual-label">Cozy corner, Room 2</span>
+          <span class="room-visual-badge">Best Value</span>
+        </div>
+      </div>
+
+      <!-- Room 3 -->
+      <div class="room-row tilt-card">
+        <div class="room-visual">
+          <div class="room-visual-bg" style="background:linear-gradient(135deg,#1c2210,#101408);"></div>
+          <div class="paint-wash wash-d"></div>
+          <svg class="room-art" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <rect x="45" y="55" width="110" height="30" fill="none" stroke="#f0b84a" stroke-width="1.2" opacity="0.6" rx="2"/>
+            <rect x="45" y="100" width="110" height="30" fill="none" stroke="#f0b84a" stroke-width="1.2" opacity="0.6" rx="2"/>
+            <line x1="45" y1="55" x2="45" y2="150" stroke="#d4960c" stroke-width="1.2" opacity="0.55"/>
+            <line x1="155" y1="55" x2="155" y2="150" stroke="#d4960c" stroke-width="1.2" opacity="0.55"/>
+            <line x1="45" y1="150" x2="155" y2="150" stroke="#d4960c" stroke-width="1" opacity="0.4"/>
+            <circle cx="60" cy="66" r="1.4" fill="#f0b84a" opacity="0.5"/>
+            <circle cx="60" cy="111" r="1.4" fill="#f0b84a" opacity="0.5"/>
+            <path d="M105,50 Q115,42 125,50" fill="none" stroke="#f0b84a" stroke-width="0.8" opacity="0.4"/>
+            <circle cx="170" cy="45" r="8" fill="none" stroke="#f0b84a" stroke-width="0.8" opacity="0.35"/>
+          </svg>
+          <span class="room-visual-label">Bunks & shared stories</span>
+          <span class="room-visual-badge">Meet the World</span>
+        </div>
+        <div class="room-info">
+          <h3 class="room-name">Dorm Bed</h3>
+          <p class="room-desc">Bunk beds, good energy, and the best conversations you'll have all year. The people Dreamcatcher attracts — curious, kind, interesting — say everything about the spirit of this place.</p>
+          <div class="room-pricing">
+            <div class="room-price-row">
+              <span class="price-big">₹700</span>
+              <span class="price-usd">≈ $8</span>
+              <span class="price-per">per bed / night</span>
+            </div>
+          </div>
+          <div class="room-amenities">
+            <span class="amenity">Bunk beds</span>
+            <span class="amenity">Shared space</span>
+            <span class="amenity">Community vibe</span>
+          </div>
+          <a href="#booking" class="btn-room">Book a Bed</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════ CAFE ════ -->
+<section class="cafe" id="cafe">
+  <div class="cafe-visual">
+    <div class="cafe-visual-inner"></div>
+    <div class="paint-wash wash-a"></div>
+    <svg class="cafe-art" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+      <path d="M85,60 Q80,45 90,35 Q80,25 90,15" fill="none" stroke="#f0b84a" stroke-width="1" opacity="0.4"/>
+      <path d="M110,60 Q105,42 115,30 Q105,20 115,8" fill="none" stroke="#f0b84a" stroke-width="1" opacity="0.4"/>
+      <path d="M60,100 L155,100 L148,155 Q145,168 130,168 L85,168 Q70,168 67,155 Z" fill="none" stroke="#f0b84a" stroke-width="1.4" opacity="0.7"/>
+      <path d="M155,108 Q180,108 180,128 Q180,148 155,145" fill="none" stroke="#d4960c" stroke-width="1.2" opacity="0.6"/>
+      <ellipse cx="107" cy="100" rx="47" ry="7" fill="none" stroke="#f0b84a" stroke-width="1" opacity="0.5"/>
+      <line x1="75" y1="185" x2="140" y2="185" stroke="#d4960c" stroke-width="0.8" opacity="0.35"/>
+      <circle cx="40" cy="50" r="1.3" fill="#f0b84a" opacity="0.4"/>
+      <circle cx="175" cy="70" r="1" fill="#f0b84a" opacity="0.35"/>
+    </svg>
+    <span class="cafe-visual-label">Morning at Dreamcatcher</span>
+  </div>
+  <div class="cafe-content">
+    <span class="section-overline reveal">Dreamcatcher Cafe</span>
+    <h2 class="section-heading heading-lg on-dark reveal">Food made with<br>mountain love</h2>
+    <br>
+    <p class="body-text body-dark reveal">From the first morning chai to an evening of falafel and stories, our cafe is where Dharamkot slows down. Indian warmth and Middle Eastern soul sharing the same kitchen, the same open sky, the same unhurried hours.</p>
+    <div class="menu-grid reveal">
+      <div class="menu-col">
+        <h4>Indian Kitchen</h4>
+        <ul>
+          <li>Morning Chai & Parathas</li>
+          <li>Dal Tadka with Rice</li>
+          <li>Aloo Sabzi</li>
+          <li>Rajma Chawal</li>
+          <li>Masala Omelette</li>
+          <li>Fresh Lassi & Smoothies</li>
+        </ul>
+      </div>
+      <div class="menu-col">
+        <h4>Middle Eastern</h4>
+        <ul>
+          <li>Hummus & Warm Pita</li>
+          <li>Falafel Plate</li>
+          <li>Shakshuka</li>
+          <li>Baba Ganoush</li>
+          <li>Tabbouleh Salad</li>
+          <li>Fresh Mint Lemonade</li>
+        </ul>
+      </div>
+    </div>
+    <a href="https://www.instagram.com/dreamcatcher.dharamkot/" target="_blank" class="insta-link reveal">
+      ↗ Follow the Cafe on Instagram
+    </a>
+  </div>
+</section>
+
+<!-- ════ ADVENTURES ════ -->
+<section class="adventures" id="adventures">
+  <div class="sparkle" style="top:12%;left:8%;animation-delay:0.3s;"></div>
+  <div class="sparkle" style="top:22%;left:88%;animation-delay:1.8s;"></div>
+  <div class="sparkle" style="top:68%;left:15%;animation-delay:2.6s;"></div>
+  <div class="sparkle" style="top:78%;left:92%;animation-delay:1.1s;"></div>
+  <div class="sparkle" style="top:45%;left:50%;animation-delay:3.4s;"></div>
+  <div class="adventures-inner">
+    <div class="adventures-header reveal">
+      <span class="section-overline" style="color:var(--gold-bright);">Beyond the door</span>
+      <h2 class="section-heading heading-lg on-dark">The mountains<br>are calling</h2>
+      <p class="body-text body-dark" style="margin-top:16px;max-width:500px;">Dharamkot sits at the gateway to some of Himachal's most breathtaking trails. We know every path, every viewpoint, every campfire worth sitting around.</p>
+    </div>
+    <div class="adv-grid reveal">
+      <div class="adv-card tilt-card">
+        <span class="adv-number">01</span>
+        <svg class="adv-icon-svg"><use href="#icon-peak"/></svg>
+        <h3 class="adv-title">Triund Trek</h3>
+        <p class="adv-body">The classic. 9km of pine forest and open ridgeline ending at a meadow that makes you forget every city you've ever lived in. The Dhauladhar range, right there, filling the horizon.</p>
+        <div class="adv-pills">
+          <span class="adv-pill">9km</span>
+          <span class="adv-pill">Moderate</span>
+          <span class="adv-pill">4-5 hours</span>
+          <span class="adv-pill">Day hike</span>
+        </div>
+      </div>
+      <div class="adv-card tilt-card">
+        <span class="adv-number">02</span>
+        <svg class="adv-icon-svg"><use href="#icon-tent"/></svg>
+        <h3 class="adv-title">Overnight Camping</h3>
+        <p class="adv-body">Sleep at Triund top under a sky so full of stars it feels like a different planet. Bonfire, blankets, and a sunrise that will stay with you for years. Some nights change you.</p>
+        <div class="adv-pills">
+          <span class="adv-pill">Overnight</span>
+          <span class="adv-pill">All levels</span>
+          <span class="adv-pill">Guided</span>
+          <span class="adv-pill">Bonfire</span>
+        </div>
+      </div>
+      <div class="adv-card tilt-card">
+        <span class="adv-number">03</span>
+        <svg class="adv-icon-svg"><use href="#icon-flag-peak"/></svg>
+        <h3 class="adv-title">Indrahar Pass</h3>
+        <p class="adv-body">For the serious trekker. At 4,342m above sea level, this is one of Himachal's great crossings — over the Dhauladhar into the Kangra Valley. Two to three days. Not for the faint of heart.</p>
+        <div class="adv-pills">
+          <span class="adv-pill">Advanced</span>
+          <span class="adv-pill">2-3 days</span>
+          <span class="adv-pill">4,342m</span>
+          <span class="adv-pill">Guided</span>
+        </div>
+      </div>
+      <div class="adv-card tilt-card">
+        <span class="adv-number">04</span>
+        <svg class="adv-icon-svg"><use href="#icon-waterfall"/></svg>
+        <h3 class="adv-title">Bhagsu Waterfall</h3>
+        <p class="adv-body">An easy, beautiful 30-minute walk through Bhagsu village to a cascading waterfall. Perfect for a slow morning when the mountains are calling but your legs are asking for something gentler.</p>
+        <div class="adv-pills">
+          <span class="adv-pill">Easy</span>
+          <span class="adv-pill">30 minutes</span>
+          <span class="adv-pill">Year-round</span>
+          <span class="adv-pill">Solo-friendly</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ GALLERY ════ -->
+<section class="gallery" id="gallery">
+  <div class="sparkle" style="top:15%;left:12%;animation-delay:0.6s;"></div>
+  <div class="sparkle" style="top:30%;left:85%;animation-delay:2.2s;"></div>
+  <div class="sparkle" style="top:60%;left:6%;animation-delay:3.1s;"></div>
+  <div class="sparkle" style="top:75%;left:70%;animation-delay:1.4s;"></div>
+  <div class="sparkle" style="top:50%;left:45%;animation-delay:4s;"></div>
+  <div class="gallery-inner">
+    <div class="gallery-header reveal">
+      <span class="section-overline" style="color:var(--gold-bright);">Through the lens</span>
+      <h2 class="section-heading heading-lg on-dark">Moments from<br>Dharamkot</h2>
+      <p class="epigraph">Some places you visit. Dharamkot, you carry home — folded quietly into the chest, taken out again on ordinary days.</p>
+    </div>
+    <div class="gallery-mosaic reveal">
+      <div class="g-item tall" onclick="openLightbox('sun','Sunrise View')"><div class="g-placeholder"><svg class="g-icon-svg"><use href="#icon-sun"/></svg><span class="g-label">Sunrise from the rooms</span></div><div class="g-overlay"><span class="g-caption">Sunrise View ↗</span></div></div>
+      <div class="g-item" onclick="openLightbox('cup','Dreamcatcher Cafe')"><div class="g-placeholder"><svg class="g-icon-svg"><use href="#icon-cup"/></svg><span class="g-label">Morning at the cafe</span></div><div class="g-overlay"><span class="g-caption">Dreamcatcher Cafe ↗</span></div></div>
+      <div class="g-item wide" onclick="openLightbox('peak','Triund Trek')"><div class="g-placeholder"><svg class="g-icon-svg"><use href="#icon-peak"/></svg><span class="g-label">Triund ridge</span></div><div class="g-overlay"><span class="g-caption">Triund Trek ↗</span></div></div>
+      <div class="g-item" onclick="openLightbox('leaf-path','Dharamkot Village')"><div class="g-placeholder"><svg class="g-icon-svg"><use href="#icon-leaf-path"/></svg><span class="g-label">Village paths</span></div><div class="g-overlay"><span class="g-caption">Dharamkot Village ↗</span></div></div>
+      <div class="g-item tall" onclick="openLightbox('stars','Night Sky Camping')"><div class="g-placeholder"><svg class="g-icon-svg"><use href="#icon-stars"/></svg><span class="g-label">Stars at Triund top</span></div><div class="g-overlay"><span class="g-caption">Night Sky Camping ↗</span></div></div>
+      <div class="g-item" onclick="openLightbox('plate','Cafe Kitchen')"><div class="g-placeholder"><svg class="g-icon-svg"><use href="#icon-plate"/></svg><span class="g-label">Cafe food</span></div><div class="g-overlay"><span class="g-caption">Cafe Kitchen ↗</span></div></div>
+      <div class="g-item" onclick="openLightbox('bunk','Dorm Beds')"><div class="g-placeholder"><svg class="g-icon-svg"><use href="#icon-bunk"/></svg><span class="g-label">Dorm room</span></div><div class="g-overlay"><span class="g-caption">Dorm Beds ↗</span></div></div>
+      <div class="g-item" onclick="openLightbox('range','The Himalayas')"><div class="g-placeholder"><svg class="g-icon-svg"><use href="#icon-range"/></svg><span class="g-label">Dhauladhar range</span></div><div class="g-overlay"><span class="g-caption">The Himalayas ↗</span></div></div>
+    </div>
+    <p class="gallery-note">Real photos coming soon · Tag us with #DreamcatcherDharamkot</p>
+  </div>
+</section>
+
+<!-- ════ REACH ════ -->
+<section class="reach" id="reach">
+  <div class="reach-inner">
+    <div class="reveal">
+      <span class="section-overline">Find your way here</span>
+      <h2 class="section-heading heading-lg on-light">Getting to<br>Dreamcatcher</h2>
+    </div>
+    <div class="reach-layout">
+      <div class="reach-map-box reveal">
+        <iframe class="map-embed" loading="lazy"
+          src="https://www.google.com/maps?q=Dharamkot,Dharamshala,Himachal+Pradesh&output=embed"
+          allowfullscreen referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <div>
+        <div class="reach-routes reveal">
+          <div class="reach-route">
+            <div class="reach-route-name">From Delhi</div>
+            <p class="reach-route-desc">Overnight Volvo bus to McLeod Ganj (~12 hours, ₹600-900). From the bus stand, take an auto to Dharamkot for ₹100 — or walk uphill 20 minutes through the village. Both are beautiful.</p>
+          </div>
+          <div class="reach-route">
+            <div class="reach-route-name">From Dharamshala Airport</div>
+            <p class="reach-route-desc">Taxi to Dharamkot takes about 45 minutes (₹500-700). Tell the driver Dreamcatcher Homestay — everyone in the area knows us.</p>
+          </div>
+          <div class="reach-route">
+            <div class="reach-route-name">From McLeod Ganj</div>
+            <p class="reach-route-desc">A 20-minute walk uphill through Dharamkot village, or a ₹100 auto. Once you reach Dharamkot, ask any local. You'll find us.</p>
+          </div>
+        </div>
+        <div class="reach-address-box reveal">
+          <div class="reach-address-title">Our Address</div>
+          <p class="reach-address-text">Dreamcatcher Homestay<br>Dharamkot Village, above McLeod Ganj<br>Dharamshala, Himachal Pradesh — 176219</p>
+          <p class="reach-local-note">"Ask anyone in Dharamkot for Dreamcatcher. Everyone knows us."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ REVIEWS ════ -->
+<section class="reviews" id="reviews">
+  <div class="reviews-inner">
+    <div class="reviews-header reveal">
+      <span class="section-overline" style="color:var(--gold-bright);">What wanderers say</span>
+      <h2 class="section-heading heading-lg on-dark">Stories from<br>our guests</h2>
+    </div>
+    <div class="reviews-carousel reveal">
+      <div class="reviews-track" id="reviewsTrack">
+        <div class="review-slide">
+          <div class="review">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-text">"I came for one night and stayed for a week. The sunrise from my room on the first morning — I actually cried. Dharamkot has a magic, and Dreamcatcher sits right at the centre of it."</p>
+            <div class="review-divider"></div>
+            <div class="review-name">Sophia M.</div>
+            <div class="review-from">🇩🇪 Germany</div>
+          </div>
+          <div class="review">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-text">"The cafe alone is worth the trip. Shakshuka at 7am with Himalayan views and morning chai. I've eaten in 40 countries and this breakfast table is in my top three. No contest."</p>
+            <div class="review-divider"></div>
+            <div class="review-name">James K.</div>
+            <div class="review-from">🇬🇧 United Kingdom</div>
+          </div>
+          <div class="review">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-text">"Solo traveller, female, nervous about the dorm. Within two hours I had friends for life. The people this place attracts — curious, kind, interesting — say everything about the energy here."</p>
+            <div class="review-divider"></div>
+            <div class="review-name">Yuki T.</div>
+            <div class="review-from">🇯🇵 Japan</div>
+          </div>
+        </div>
+        <div class="review-slide">
+          <div class="review">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-text">"We booked two nights and stayed for ten. The host arranged our Triund trek personally, walked half the way with us. This is not hospitality — this is friendship with a room attached."</p>
+            <div class="review-divider"></div>
+            <div class="review-name">Marco B.</div>
+            <div class="review-from">🇮🇹 Italy</div>
+          </div>
+          <div class="review">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-text">"The camping night at Triund organised through Dreamcatcher was the highlight of my six months travelling India. Stars, silence, a bonfire, and people I still talk to today."</p>
+            <div class="review-divider"></div>
+            <div class="review-name">Amara O.</div>
+            <div class="review-from">🇳🇬 Nigeria</div>
+          </div>
+          <div class="review">
+            <span class="review-stars">★★★★★</span>
+            <p class="review-text">"Budget room, unlimited chai, a view I still think about months later. Simple, honest, warm. Exactly what Dharamkot is supposed to feel like."</p>
+            <div class="review-divider"></div>
+            <div class="review-name">Priya N.</div>
+            <div class="review-from">🇮🇳 India</div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-dots" id="reviewDots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FAQ ════ -->
+<section class="faq" id="faq">
+  <div class="faq-inner">
+    <div class="faq-header reveal">
+      <span class="section-overline">Before you write to us</span>
+      <h2 class="section-heading heading-lg on-light">Questions wanderers<br>often ask</h2>
+    </div>
+    <div class="reveal">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Do you provide meals with the room?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Meals are not included in the room price, but the Dreamcatcher Cafe is right next door serving Indian and Middle Eastern food all day — breakfast to dinner, plus chai whenever you need it.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Is it safe for solo female travellers?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Yes. Many of our guests are solo women travellers. Dharamkot is a quiet, community-watched village, and our common spaces make it easy to meet other travellers within hours of arriving.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Can you arrange the Triund trek or camping for us?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Absolutely — just mention it in your booking message or ask on WhatsApp. We know local guides personally and can arrange day treks, overnight camping, or the longer Indrahar Pass crossing.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What if I need to cancel or change my dates?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Message us on WhatsApp as early as you can — we understand travel plans change and we'll always try to work something out with you directly. No rigid cancellation forms here.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Is there wifi and hot water?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Yes to both. Wifi covers the common areas and most rooms, and hot water is available throughout the day — mountain mornings get cold, we make sure you're comfortable.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ BOOKING ════ -->
+<section class="booking" id="booking">
+  <div class="booking-inner">
+    <div class="reveal">
+      <span class="section-overline" style="color:var(--gold-bright);">Reserve your place</span>
+      <h2 class="section-heading heading-lg on-dark">Begin your<br>story here</h2>
+      <p class="body-text body-dark" style="margin-top:16px;">Fill in your details and we'll confirm via WhatsApp within a few hours. We reply fast — usually before the mountains go dark.</p>
+    </div>
+    <div class="booking-layout">
+      <div class="booking-sidebar reveal">
+        <div class="b-detail">
+          <span class="b-icon">🌅</span>
+          <div>
+            <span class="b-label">Check-in & Check-out</span>
+            <span class="b-val">Check-in from 10:00 AM<br>Check-out by 11:30 AM</span>
+          </div>
+        </div>
+        <div class="b-detail">
+          <span class="b-icon">💰</span>
+          <div>
+            <span class="b-label">Room Rates</span>
+            <span class="b-val">Sunrise Private — ₹1,500 / $18<br>Budget Private — ₹1,200 / $14<br>Dorm Bed — ₹700 / $8</span>
+          </div>
+        </div>
+        <div class="b-detail">
+          <span class="b-icon">📱</span>
+          <div>
+            <span class="b-label">Prefer WhatsApp?</span>
+            <span class="b-val">Message us directly:<br>+91 97368 92850</span>
+          </div>
+        </div>
+        <div class="b-detail">
+          <span class="b-icon">🤍</span>
+          <div>
+            <span class="b-label">Our Promise</span>
+            <span class="b-val">No hidden charges. No strict rules.<br>Just honest hospitality and mountain warmth.</span>
+          </div>
+        </div>
+      </div>
+      <div class="booking-form-box reveal">
+        <h3 class="form-title">Booking Request</h3>
+        <div class="f-row">
+          <div class="f-group">
+            <label class="f-label">Your Name</label>
+            <input class="f-input" type="text" id="gName" placeholder="Full name">
+          </div>
+          <div class="f-group">
+            <label class="f-label">Email Address</label>
+            <input class="f-input" type="email" id="gEmail" placeholder="your@email.com">
+          </div>
+        </div>
+        <div class="f-row">
+          <div class="f-group">
+            <label class="f-label">WhatsApp Number</label>
+            <input class="f-input" type="tel" id="gPhone" placeholder="+91 or international">
+          </div>
+          <div class="f-group">
+            <label class="f-label">Room Type</label>
+            <select class="f-select" id="gRoom">
+              <option value="">Choose your stay</option>
+              <option>Sunrise Private Room — ₹1,500</option>
+              <option>Budget Private Room — ₹1,200</option>
+              <option>Dorm Bed — ₹700</option>
+            </select>
+          </div>
+        </div>
+        <div class="f-row">
+          <div class="f-group">
+            <label class="f-label">Check-in Date</label>
+            <input class="f-input" type="date" id="gIn">
+          </div>
+          <div class="f-group">
+            <label class="f-label">Check-out Date</label>
+            <input class="f-input" type="date" id="gOut">
+          </div>
+        </div>
+        <div class="f-row">
+          <div class="f-group">
+            <label class="f-label">Number of Guests</label>
+            <select class="f-select" id="gGuests">
+              <option>1 guest</option>
+              <option>2 guests</option>
+              <option>3 guests</option>
+              <option>4+ guests</option>
+            </select>
+          </div>
+          <div class="f-group">
+            <label class="f-label">Interested in Trekking?</label>
+            <select class="f-select" id="gTrek">
+              <option>Not this time</option>
+              <option>Triund Day Trek</option>
+              <option>Overnight Camping</option>
+              <option>Indrahar Pass</option>
+              <option>Bhagsu Waterfall</option>
+            </select>
+          </div>
+        </div>
+        <div class="f-group">
+          <label class="f-label">Anything you'd like us to know</label>
+          <textarea class="f-textarea" id="gMsg" placeholder="Arrival time, dietary needs, special requests..."></textarea>
+        </div>
+        <button class="f-submit" onclick="sendBooking()">Send Booking Request</button>
+        <p class="f-note">We'll confirm via WhatsApp within a few hours</p>
+        <div id="formMsg"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ CONTACT ════ -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="reveal">
+      <span class="section-overline" style="color:var(--gold-bright);">We're right here</span>
+      <h2 class="section-heading heading-lg on-dark">Come find us</h2>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="c-card">
+        <span class="c-icon">📱</span>
+        <div class="c-title">WhatsApp</div>
+        <div class="c-val">
+          <a href="https://wa.me/919736892850" target="_blank">+91 97368 92850</a>
+          <br><span style="font-size:0.82rem;font-style:italic;color:rgba(247,238,216,0.3);">Fastest way to reach us</span>
+        </div>
+      </div>
+      <div class="c-card">
+        <span class="c-icon">📍</span>
+        <div class="c-title">Find Us</div>
+        <div class="c-val">Dharamkot Village<br>Above McLeod Ganj<br>Dharamshala, HP 176219</div>
+      </div>
+      <div class="c-card">
+        <span class="c-icon">📸</span>
+        <div class="c-title">Follow Along</div>
+        <div class="c-val">
+          <a href="https://www.instagram.com/dreamcatcher_homestays/" target="_blank">@dreamcatcher_homestays</a>
+          <br>
+          <a href="https://www.instagram.com/dreamcatcher.dharamkot/" target="_blank">@dreamcatcher.dharamkot</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FOOTER ════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">Dreamcatcher</div>
+        <p class="footer-tagline">A quiet place above McLeod Ganj where the mountains feel like home and every stranger becomes a friend.</p>
+        <br>
+        <a href="https://wa.me/919736892850" target="_blank" class="insta-link" style="margin-top:0;">📱 +91 97368 92850</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigate</div>
+        <ul class="footer-links-list">
+          <li><a href="#story">Our Story</a></li>
+          <li><a href="#rooms">Stay With Us</a></li>
+          <li><a href="#cafe">Dreamcatcher Cafe</a></li>
+          <li><a href="#adventures">Trek & Camp</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#booking">Book a Stay</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Find Us</div>
+        <ul class="footer-links-list">
+          <li><a href="https://www.instagram.com/dreamcatcher_homestays/" target="_blank">Instagram (Homestay)</a></li>
+          <li><a href="https://www.instagram.com/dreamcatcher.dharamkot/" target="_blank">Instagram (Cafe)</a></li>
+          <li><a href="#reach">Directions</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <svg class="footer-flourish" viewBox="0 0 400 30" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <line x1="0" y1="15" x2="165" y2="15" stroke="#d4960c" stroke-width="0.6" opacity="0.25"/>
+      <circle cx="200" cy="15" r="9" fill="none" stroke="#d4960c" stroke-width="0.8" opacity="0.4"/>
+      <circle cx="200" cy="15" r="2" fill="#f0b84a" opacity="0.5"/>
+      <path d="M191,15 Q195,8 200,10 Q205,8 209,15 Q205,22 200,20 Q195,22 191,15 Z" fill="none" stroke="#d4960c" stroke-width="0.5" opacity="0.3"/>
+      <line x1="235" y1="15" x2="400" y2="15" stroke="#d4960c" stroke-width="0.6" opacity="0.25"/>
+    </svg>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Dreamcatcher Homestay · Dharamkot, Dharamshala</span>
+      <span class="footer-made">Made with love in the mountains</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── Stars ── */
+(function(){
+  const c=document.getElementById('starCanvas');
+  const ctx=c.getContext('2d');
+  function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
+  resize();
+  window.addEventListener('resize',resize);
+  const stars=Array.from({length:180},()=>({
+    x:Math.random()*100,
+    y:Math.random()*65,
+    r:Math.random()*1.4+0.3,
+    a:Math.random(),
+    speed:0.003+Math.random()*0.008,
+    phase:Math.random()*Math.PI*2
+  }));
+  function draw(t){
+    ctx.clearRect(0,0,c.width,c.height);
+    stars.forEach(s=>{
+      const alpha=0.2+0.7*(0.5+0.5*Math.sin(s.phase+t*s.speed));
+      ctx.beginPath();
+      ctx.arc(s.x/100*c.width,s.y/100*c.height,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,250,235,${alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw(0);
+})();
+
+/* ── Fireflies ── */
+(function(){
+  const hero=document.querySelector('.hero');
+  for(let i=0;i<18;i++){
+    const f=document.createElement('div');
+    f.className='firefly';
+    f.style.cssText=`
+      left:${10+Math.random()*75}%;
+      top:${20+Math.random()*55}%;
+      animation-delay:${Math.random()*8}s;
+      animation-duration:${6+Math.random()*8}s;
+      --tx:${(Math.random()-0.5)*60}px;
+      --ty:${-(10+Math.random()*50)}px;
+      --tx2:${(Math.random()-0.5)*80}px;
+      --ty2:${-(20+Math.random()*70)}px;
+      opacity:${0.4+Math.random()*0.6};
+    `;
+    hero.appendChild(f);
+  }
+})();
+
+/* ── Nav scroll ── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
+});
+
+/* ── Scroll reveal ── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});
+},{threshold:0.12});
+document.querySelectorAll('.reveal,.reveal-left').forEach(el=>obs.observe(el));
+
+/* ── Custom cursor ── */
+(function(){
+  const dot=document.getElementById('cursorDot');
+  const ring=document.getElementById('cursorRing');
+  let rx=0,ry=0,mx=0,my=0,started=false;
+  window.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    dot.style.left=mx+'px';dot.style.top=my+'px';
+    if(!started){started=true;rx=mx;ry=my;dot.classList.add('active');ring.classList.add('active');}
+  });
+  function loop(){
+    rx+=(mx-rx)*0.15;ry+=(my-ry)*0.15;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(loop);
+  }
+  loop();
+  const hoverables=document.querySelectorAll('a,button,.tilt-card,.g-item,.faq-item,input,select,textarea,.c-dot');
+  hoverables.forEach(el=>{
+    el.addEventListener('mouseenter',()=>ring.classList.add('hover'));
+    el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));
+  });
+})();
+
+/* ── Scroll progress bar ── */
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  const pct=(h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('scrollProgress').style.width=pct+'%';
+});
+
+/* ── Lightbox ── */
+function openLightbox(icon,title){
+  document.getElementById('lbIconUse').setAttribute('href','#icon-'+icon);
+  document.getElementById('lbTitle').textContent=title;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+}
+document.getElementById('lightbox').addEventListener('click',function(e){
+  if(e.target===this)closeLightbox();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+
+/* ── 3D tilt on cards ── */
+document.querySelectorAll('.tilt-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=e.clientX-r.left,y=e.clientY-r.top;
+    const cx=r.width/2,cy=r.height/2;
+    const rotX=((y-cy)/cy)*-3;
+    const rotY=((x-cx)/cx)*3;
+    card.style.transform=`perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.01,1.01,1.01)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='perspective(1000px) rotateX(0) rotateY(0) scale3d(1,1,1)';
+  });
+});
+
+/* ── Testimonial carousel ── */
+(function(){
+  const track=document.getElementById('reviewsTrack');
+  const dotsWrap=document.getElementById('reviewDots');
+  const slides=track.children.length;
+  let idx=0;
+  for(let i=0;i<slides;i++){
+    const d=document.createElement('button');
+    d.className='c-dot'+(i===0?' active':'');
+    d.onclick=()=>goTo(i);
+    dotsWrap.appendChild(d);
+  }
+  function goTo(i){
+    idx=i;
+    track.style.transform=`translateX(-${idx*100}%)`;
+    [...dotsWrap.children].forEach((d,j)=>d.classList.toggle('active',j===idx));
+  }
+  setInterval(()=>{goTo((idx+1)%slides);},5500);
+})();
+
+/* ── Animated count-up stats ── */
+(function(){
+  let done=false;
+  const statObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting && !done){
+        done=true;
+        document.querySelectorAll('.stat-num[data-target]').forEach(el=>{
+          const target=parseInt(el.getAttribute('data-target'),10);
+          const suffix=el.getAttribute('data-suffix')||'';
+          const useComma=el.getAttribute('data-format')==='comma';
+          let cur=0;
+          const step=Math.max(1,Math.ceil(target/36));
+          const timer=setInterval(()=>{
+            cur+=step;
+            if(cur>=target){cur=target;clearInterval(timer);}
+            el.textContent=(useComma?cur.toLocaleString():cur)+suffix;
+          },28);
+        });
+      }
+    });
+  },{threshold:0.5});
+  document.querySelector('.stat-bar') && statObs.observe(document.querySelector('.stat-bar'));
+})();
+
+/* ── FAQ accordion ── */
+function toggleFaq(el){
+  const wasOpen=el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
+  if(!wasOpen)el.classList.add('open');
+}
+
+/* ── Date min ── */
+const today=new Date().toISOString().split('T')[0];
+document.getElementById('gIn').min=today;
+document.getElementById('gOut').min=today;
+document.getElementById('gIn').addEventListener('change',function(){
+  document.getElementById('gOut').min=this.value;
+});
+
+/* ── Booking ── */
+const API_URL="https://5py5on6pvh.execute-api.ap-south-1.amazonaws.com/booking";
+async function sendBooking(){
+  const n=document.getElementById('gName').value.trim();
+  const e=document.getElementById('gEmail').value.trim();
+  const p=document.getElementById('gPhone').value.trim();
+  const r=document.getElementById('gRoom').value;
+  const ci=document.getElementById('gIn').value;
+  const co=document.getElementById('gOut').value;
+  const g=document.getElementById('gGuests').value;
+  const tr=document.getElementById('gTrek').value;
+  const m=document.getElementById('gMsg').value.trim();
+  const msg=document.getElementById('formMsg');
+
+  if(!n||!e||!p||!r||!ci||!co){
+    msg.style.color='#c84a0a';
+    msg.textContent='Please fill in all required fields.';
+    return;
+  }
+  const btn=document.querySelector('.f-submit');
+  btn.textContent='Sending...';btn.disabled=true;
+  msg.style.color='var(--gold)';msg.textContent='';
+  try{
+    const res=await fetch(API_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name:n,email:e,phone:p,room:r,checkIn:ci,checkOut:co,guests:g,trekking:tr,message:m})
+    });
+    const d=await res.json();
+    msg.textContent=d.message||'Booking request sent! We\'ll confirm on WhatsApp soon.';
+    document.querySelectorAll('.f-input,.f-select,.f-textarea').forEach(x=>x.value='');
+  }catch{
+    msg.style.color='var(--mist)';
+    msg.textContent='Request received! We\'ll reach you on WhatsApp shortly. You can also message us directly at +91 97368 92850.';
+  }finally{
+    btn.textContent='Send Booking Request';btn.disabled=false;
+  }
+}
+</script>
+</body>
+</html>
